@@ -54,3 +54,39 @@ The application will be available at:
 - Web Interface: `http://localhost:8000`
 - API Documentation: `http://localhost:8000/docs`
 
+## Testing
+
+The project includes comprehensive test coverage for both backend and frontend.
+
+### Run All Tests
+```powershell
+# Backend tests (pytest)
+python -m pytest backend/tests/ -v
+
+# Frontend E2E tests (Playwright)
+python frontend/tests/run_all_tests.py
+
+# Individual frontend test suites
+python frontend/tests/test_theme_toggle.py
+python frontend/tests/test_chat_functionality.py
+python frontend/tests/test_ui_components.py
+```
+
+### Pre-Push Hook
+All tests run automatically before git push to ensure code quality:
+- 86 backend tests
+- 25+ frontend E2E tests
+- Audio feedback on success/failure
+
+See [TESTING.md](TESTING.md) for detailed testing documentation.
+
+## Features
+
+- **Semantic Search**: Vector-based search using ChromaDB
+- **AI Responses**: Powered by Claude 3.5 Sonnet
+- **Course Analytics**: Track and display course statistics
+- **Session Management**: Maintain conversation history
+- **Theme Support**: Light and dark mode with persistence
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Accessibility**: ARIA labels, keyboard navigation
+- **Comprehensive Testing**: Backend and frontend E2E tests

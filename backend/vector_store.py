@@ -20,9 +20,9 @@ class SearchResults:
     def from_chroma(cls, chroma_results: Dict) -> "SearchResults":
         """Create SearchResults from ChromaDB query results"""
         return cls(
-            documents=chroma_results["documents"][0] if chroma_results["documents"] else [],
-            metadata=chroma_results["metadatas"][0] if chroma_results["metadatas"] else [],
-            distances=chroma_results["distances"][0] if chroma_results["distances"] else [],
+            documents=chroma_results.get("documents", [[]])[0] if chroma_results.get("documents") else [],
+            metadata=chroma_results.get("metadatas", [[]])[0] if chroma_results.get("metadatas") else [],
+            distances=chroma_results.get("distances", [[]])[0] if chroma_results.get("distances") else [],
         )
 
     @classmethod

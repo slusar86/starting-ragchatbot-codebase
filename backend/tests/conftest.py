@@ -131,10 +131,10 @@ def mock_rag_system(mock_vector_store, mock_ai_generator, mock_session_manager):
     mock.ai_generator = mock_ai_generator
     mock.session_manager = mock_session_manager
     
-    # Mock query method
+    # Mock query method - return sources as strings (not dicts with similarity)
     mock.query.return_value = (
         "This is a generated answer.",
-        [{"course": "Course 1", "instructor": "John Doe", "similarity": 0.85}]
+        ["Course 1: Content from John Doe's course"]
     )
     
     # Mock course analytics

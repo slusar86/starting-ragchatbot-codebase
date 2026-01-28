@@ -90,9 +90,6 @@ addopts = [
     "--strict-markers",
     "--tb=short",
     "--disable-warnings",
-    "--cov=backend",
-    "--cov-report=html",
-    "--cov-report=term-missing",
 ]
 markers = [
     "unit: Unit tests",
