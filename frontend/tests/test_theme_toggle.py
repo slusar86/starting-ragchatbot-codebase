@@ -227,6 +227,90 @@ async def test_theme_visual_appearance():
             return False
 
 
+async def test_footer_presence():
+    """Test that the footer is present and properly styled"""
+    print("\n=== Testing Footer Presence and Styling ===\n")
+    
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=False)
+        page = await browser.new_page()
+        
+        try:
+            await page.goto("http://localhost:8000", wait_until="networkidle")
+            
+            # Check if footer exists
+            print("1. Checking if footer exists...")
+            footer = page.locator(".app-footer")
+            await expect(footer).to_be_visible(timeout=5000)
+            print("✓ Footer is visible")
+            
+            # Check footer text content
+            print("\n2. Checking footer content...")
+            footer_text = await footer.text_content()
+            if "Slusar86" in footer_text and "Claude" in footer_text:
+                print(f"✓ Footer contains correct text: {footer_text.strip()}")
+            else:
+                print(f"✗ Footer text incorrect: {footer_text}")
+                return False
+            
+            # Check footer positioning
+            print("\n3. Checking footer positioning...")
+            footer_position = await footer.evaluate("el => window.getComputedStyle(el).position")
+            if footer_position == "fixed":
+                print("✓ Footer has fixed positioning")
+            else:
+                print(f"✗ Footer position is {footer_position}, expected fixed")
+                return False
+            
+            # Check footer is at bottom-left
+            footer_bottom = await footer.evaluate("el => window.getComputedStyle(el).bottom")
+            footer_left = await footer.evaluate("el => window.getComputedStyle(el).left")
+            print(f"  Bottom: {footer_bottom}, Left: {footer_left}")
+            if footer_bottom == "0px" and footer_left == "0px":
+                print("✓ Footer positioned at bottom-left")
+            else:
+                print(f"⚠ Footer position may be different")
+            
+            # Check Claude brand color
+            print("\n4. Checking Claude brand styling...")
+            claude_brand = page.locator(".claude-brand")
+            await expect(claude_brand).to_be_visible()
+            claude_color = await claude_brand.evaluate("el => window.getComputedStyle(el).color")
+            print(f"✓ Claude brand color: {claude_color}")
+            
+            # Check font size
+            print("\n5. Checking footer font size...")
+            font_size = await footer.evaluate("el => window.getComputedStyle(el).fontSize")
+            print(f"✓ Footer font size: {font_size}")
+            
+            # Test footer visibility in both themes
+            print("\n6. Testing footer visibility in both themes...")
+            theme_button = page.locator("#themeToggle")
+            
+            # Switch to light theme
+            await theme_button.click()
+            await page.wait_for_timeout(500)
+            await expect(footer).to_be_visible()
+            print("✓ Footer visible in light theme")
+            
+            # Switch back to dark theme
+            await theme_button.click()
+            await page.wait_for_timeout(500)
+            await expect(footer).to_be_visible()
+            print("✓ Footer visible in dark theme")
+            
+            print("\n=== Footer Tests Passed! ===\n")
+            
+            await page.wait_for_timeout(2000)
+            await browser.close()
+            return True
+            
+        except Exception as e:
+            print(f"\n✗ Footer test failed with error: {e}")
+            await browser.close()
+            return False
+
+
 async def main():
     """Run all theme toggle tests"""
     print("\n" + "="*60)
@@ -239,14 +323,18 @@ async def main():
     # Test 2: Visual appearance
     result2 = await test_theme_visual_appearance()
     
+    # Test 3: Footer presence and styling
+    result3 = await test_footer_presence()
+    
     # Summary
     print("\n" + "="*60)
     print("TEST SUMMARY")
     print("="*60)
     print(f"Functionality Tests: {'✓ PASSED' if result1 else '✗ FAILED'}")
     print(f"Visual Tests: {'✓ PASSED' if result2 else '✗ FAILED'}")
+    print(f"Footer Tests: {'✓ PASSED' if result3 else '✗ FAILED'}")
     
-    if result1 and result2:
+    if result1 and result2 and result3:
         print("\n🎉 All tests passed successfully!")
         return 0
     else:
