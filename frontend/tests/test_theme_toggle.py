@@ -247,7 +247,7 @@ async def test_footer_presence():
             # Check footer text content
             print("\n2. Checking footer content...")
             footer_text = await footer.text_content()
-            if "Slusar86" in footer_text and "Claude" in footer_text:
+            if "All rights reserved" in footer_text and "Claude" in footer_text:
                 print(f"✓ Footer contains correct text: {footer_text.strip()}")
             else:
                 print(f"✗ Footer text incorrect: {footer_text}")
