@@ -154,7 +154,7 @@ class TestCourseSearchToolEdgeCases:
         """EDGE CASE: Special characters in query"""
         special_query = "What is <script>alert('test')</script> & Python?"
 
-        mock_vector_store.search.return_value = SearchResults.empty("No results")
+        mock_vector_store.search.return_value = SearchResults.empty("")
 
         # Should handle without injection issues
         result = search_tool.execute(query=special_query)
