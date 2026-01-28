@@ -1,0 +1,23 @@
+# .pylintrc configuration
+[MASTER]
+ignore=.git,__pycache__,.venv,.venv-new,chroma_db
+jobs=1
+
+[MESSAGES CONTROL]
+disable=
+    missing-docstring,
+    invalid-name,
+    too-few-public-methods,
+    too-many-arguments,
+    protected-access,
+    line-too-long,
+    import-error
+
+[FORMAT]
+max-line-length=100
+indent-string='    '
+
+[DESIGN]
+max-args=7
+max-attributes=10
+max-locals=15

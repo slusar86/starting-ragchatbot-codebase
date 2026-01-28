@@ -1,0 +1,3 @@
+# Test dependencies for RAG chatbot backend
+pytest>=7.4.0
+pytest-mock>=3.11.1
